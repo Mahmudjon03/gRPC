@@ -1,0 +1,40 @@
+﻿@using Grpc.Net.Client
+@using ClientHTML
+@{
+    using var channel = GrpcChannel.ForAddress("http://localhost:5117");
+
+    var client = new ToDoServiceProto.ToDoServiceProtoClient(channel);
+    var allToDo = await client.GetAllToDoAsync(new EmptyRequest());
+    <table class="table table-striped">
+
+        <thead>
+        <tr>
+
+            <th scope="col">Id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+        </tr>
+        </thead>
+          <button>@Delete(60)</button>
+        @foreach (var toDo in allToDo.ToDoProto)
+        {
+            <tbody>
+            <tr>
+                <td>@toDo.Id</td>
+                <td>@toDo.Title</td>
+                <td>@toDo.Description</td>
+                <td>
+                    </td>
+            </tr>
+            </tbody>
+        }
+      
+    </table>
+}
+@{
+  async Task<bool> Delete(int idRequest)
+    {
+       await client!.DeleteToDoAsync(new IdRequest() { Id = idRequest });
+        return true;
+    }
+}

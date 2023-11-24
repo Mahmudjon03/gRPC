@@ -1,0 +1,30 @@
+syntax = "proto3";
+option csharp_namespace = "GRPSExample";
+package greet;
+service ToDoServiceProto{
+  rpc GetAllToDo(EmptyRequest) returns (AllToDo);  
+  rpc GetByIdToDo(IdRequest) returns (ToDoProto);
+  rpc CreateToDo(AddToDo) returns (ToDoProto);
+  rpc UpdateToDo(ToDoProto) returns (ToDoProto);
+  rpc DeleteToDo (IdRequest) returns (BooleanRequest);
+}
+message EmptyRequest{}
+
+message IdRequest{
+  int32 id=1;
+}
+message ToDoProto{
+  int32 id=1;
+  string title=2;
+  string description=3;
+}
+message AllToDo{
+  repeated ToDoProto to_do_proto = 1;
+}
+message AddToDo{
+  string  title=1;
+  string description=2;
+}
+message  BooleanRequest{
+  bool boolean=1;
+}
